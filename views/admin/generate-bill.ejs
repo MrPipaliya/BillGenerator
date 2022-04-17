@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Mirrored from themesbrand.com/skote/layouts/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 04:46:07 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Generate Bill</title>
+
+    <%- include('config/datatablelinks'); %>
+        <%- include('config/headerlinks'); %>
+
+</head>
+
+<body data-sidebar="dark">
+
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <%- include('config/header'); %>
+                </div>
+        </header>
+
+        <!-- ========== Left Sidebar Start ========== -->
+        <%- include('config/leftbar'); %>
+            <!-- Left Sidebar End -->
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Generate Bill</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item active">Bill</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <form action="/admin/bill/print" method="post">
+
+                            <div class="row">
+
+                                <div class="col-xl-2">
+                                    Bill Date: <input type="date" class="form-control" id="billDate" name="billDate"
+                                        required />
+                                </div>
+                                <script>
+                                    var d = new Date();
+                                    if ((d.getMonth() + 1) < 10)
+                                        document.getElementById("billDate").defaultValue = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-" + d.getDate();
+                                    else
+                                        document.getElementById("billDate").defaultValue = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+
+                                </script>
+                                <div class="col-xl-2">
+                                    Buyer Name: <input type="text" class="form-control" name="buyerName" required />
+                                </div>
+
+                            </div>
+                            <br />
+                            <div class="row">
+                                <% productList.forEach(function(record){ %>
+                                    <div class="col-xl-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table style="width:100%;">
+                                                    <tr>
+                                                        <td style="width:30%;">
+                                                            <img src="images/productimages/<%= record.FileName %>"
+                                                                style="width:60px;height:60px;" />
+                                                        </td>
+                                                        <td style="width:48%;">
+                                                            <h6>
+                                                                <%= record.ProductName %>
+                                                            </h6>
+                                                            <p>
+                                                                <%= record.ProductSellPrice %> Rs.
+                                                            </p>
+                                                        </td>
+                                                        <td style="width:22%;text-align: right;">
+                                                            <input type="hidden" name="selectedProductName"
+                                                                value="<%= record.ProductName %>" />
+                                                            <input type="hidden" name="selectedProductCost"
+                                                                value="<%= record.ProductCost %>" />
+                                                            <input type="hidden" name="selectedProductPrice"
+                                                                value="<%= record.ProductSellPrice %>" />
+                                                            <input class="form-control" required type="number" value="0"
+                                                                name="selectedItemQty" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <!-- end card body -->
+                                        </div>
+                                        <!-- end card -->
+                                    </div>
+                                    <% }); %>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10"></div>
+                                <div class="col-xl-2">
+                                    <input type="submit" value="Generate Bill" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- end row -->
+
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+
+                <!-- Transaction Modal -->
+                <!-- <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog"
+                    aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="transaction-detailModalLabel">Order Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="mb-2">Product id: <span class="text-primary">#SK2540</span></p>
+                                <p class="mb-4">Billing Name: <span class="text-primary">Neal Matthews</span></p>
+
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Product Name</th>
+                                                <th scope="col">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div>
+                                                        <img src="assets/images/product/img-7.png" alt=""
+                                                            class="avatar-sm">
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    <div>
+                                                        <h5 class="text-truncate font-size-14">Wireless Headphone
+                                                            (Black)</h5>
+                                                        <p class="text-muted mb-0">$ 225 x 1</p>
+                                                    </div>
+                                                </td>
+                                                <td>$ 255</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div>
+                                                        <img src="assets/images/product/img-4.png" alt=""
+                                                            class="avatar-sm">
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    <div>
+                                                        <h5 class="text-truncate font-size-14">Phone patterned cases
+                                                        </h5>
+                                                        <p class="text-muted mb-0">$ 145 x 1</p>
+                                                    </div>
+                                                </td>
+                                                <td>$ 145</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h6 class="m-0 text-right">Sub Total:</h6>
+                                                </td>
+                                                <td>
+                                                    $ 400
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h6 class="m-0 text-right">Shipping:</h6>
+                                                </td>
+                                                <td>
+                                                    Free
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <h6 class="m-0 text-right">Total:</h6>
+                                                </td>
+                                                <td>
+                                                    $ 400
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- end modal -->
+
+                <!-- subscribeModal -->
+                <!-- <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom-0">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center mb-4">
+                                    <div class="avatar-md mx-auto mb-4">
+                                        <div class="avatar-title bg-light rounded-circle text-primary h1">
+                                            <i class="mdi mdi-email-open"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-xl-10">
+                                            <h4 class="text-primary">Subscribe !</h4>
+                                            <p class="text-muted font-size-14 mb-4">Subscribe our newletter and get notification to stay update.</p>
+
+                                            <div class="input-group bg-light rounded">
+                                                <input type="email" class="form-control bg-transparent border-0" placeholder="Enter Email address" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                
+                                                <button class="btn btn-primary" type="button" id="button-addon2">
+                                                    <i class="bx bxs-paper-plane"></i>
+                                                </button>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- end modal -->
+
+                <%- include('config/footer'); %>
+            </div>
+            <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+
+    <%- include('config/footerlinks'); %>
+
+        <%- include('config/datatablefooterlinks'); %>
+
+</body>
+
+
+<!-- Mirrored from themesbrand.com/skote/layouts/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 04:46:08 GMT -->
+
+</html>
